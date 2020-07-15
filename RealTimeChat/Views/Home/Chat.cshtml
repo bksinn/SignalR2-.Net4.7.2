@@ -3,10 +3,21 @@
 }
 <h2>JS Error Log</h2>
 <div class="container">
-    <button class="btn btn-primary" onclick="produceError()">Produce Error</button>
+    <button class="btn btn-primary" onclick="produceError()">Produce Custom Error</button>
+    <br />
+    <br />
+    <button class="btn btn-primary" onclick="produceConsoleError()">Produce I_DONT_EXIST</button>
     <div id="discussion">
-       
+
     </div>
+    @*<div style="margin: 15px 0;" class="blah">
+            <label>Send Message</label>
+            <input type="text" id="message" />
+            <input class="btn btn-primary" type="button" id="sendmessage" value="Send" />
+            <input type="hidden" id="displayname" />
+            <ul id="discussion2">
+            </ul>
+        </div>*@
 </div>
 @section scripts {
     <!--Script references. -->
@@ -17,13 +28,14 @@
     <script src="~/signalr/hubs"></script>
     <!--SignalR script to update the chat page and send messages.-->
     <script>
+
         $(function () {
             // Reference the auto-generated proxy for the hub.
             var chat = $.connection.chatHub;
             // Create a function that the hub can call back to display messages.
             chat.client.addNewMessageToPage = function (name, message) {
                 // Add the message to the page.
-                $('#discussion').append('<li><strong>' + htmlEncode(name)
+                $('#discussion2').append('<li><strong>' + htmlEncode(name)
                     + '</strong>: ' + htmlEncode(message) + '</li>');
             };
 
@@ -39,10 +51,14 @@
                     </div>
                 `;
             }
+
+
             //// Get the user name and store it to prepend to messages.
             //$('#displayname').val(prompt('Enter your name:', ''));
             //// Set initial focus to message input box.
             //$('#message').focus();
+
+
             // Start the connection.
             $.connection.hub.start().done(function () {
                 //$('#sendmessage').click(function () {
@@ -85,10 +101,14 @@
             throw "Error Produced";
         }
 
-        ////Uncomment to force error for testing
-        //setTimeout(() => {
-        //    throw "Custom Error Message";
-        //}, 2500);
+        function produceConsoleError() {
+            console.log(I_DONT_EXIST);
+        }
+
+        //Uncomment to force error for testing
+        setTimeout(() => {
+            throw "Sample Error";
+        }, 2500);
 
         //setTimeout(() => {
         //    console.log(sdfsdfsdfsdfd);
